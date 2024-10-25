@@ -1,0 +1,7 @@
+livekit:
+  project:
+    host: ${LIVEKIT_URL}
+    id: ${LIVEKIT_ID}
+  api:
+    key: ${LIVEKIT_KEY}
+    secretKey: ${LIVEKIT_SECRET_KEY}
