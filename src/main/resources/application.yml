@@ -5,3 +5,4 @@ livekit:
   api:
     key: ${LIVEKIT_KEY}
     secretKey: ${LIVEKIT_SECRET_KEY}
+    ttl: 1000000000000

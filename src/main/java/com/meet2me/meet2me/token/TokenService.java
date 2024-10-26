@@ -8,6 +8,7 @@ import io.livekit.server.AccessToken;
 import io.livekit.server.RoomJoin;
 import io.livekit.server.RoomName;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,19 +17,25 @@ public class TokenService {
 
     private final TokenRepository tokenRepository;
     private final RoomRepository roomRepository;
+    @Value("${livekit.api.key}")
+    private String apiKey;
+    @Value("${livekit.api.secretKey}")
+    private String secret;
+    @Value("${livekit.api.ttl}")
+    private Long ttl;
 
     public TokenCreateSuccessRes createToken(String roomId, String username) {
         if(!roomRepository.existsById(roomId)) {
             throw new IllegalArgumentException("Room does not exist");
         }
 
-        AccessToken token = new AccessToken("apiKey", "secret");
+        AccessToken token = new AccessToken(apiKey, secret);
 
         // Fill in token information.
         token.setName(username);
         token.setIdentity("identity");
         // token.setMetadata("metadata");
-        token.setTtl(1000000000L); //long millis
+        token.setTtl(ttl); //long millis
         token.addGrants(new RoomJoin(true), new RoomName(roomId));
         String jwtToken = token.toJwt();
         if(tokenRepository.existsByToken(jwtToken)) {
