@@ -37,7 +37,3 @@ dependencies {
     //LiveKit
     implementation 'io.livekit:livekit-server:0.6.1'
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
