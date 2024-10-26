@@ -41,7 +41,21 @@ public class TokenService {
         if(tokenRepository.existsByToken(jwtToken)) {
             throw new IllegalArgumentException("token already exists for this username in the room");
         }
-        tokenRepository.save(new Token(jwtToken));
+        if(!tokenRepository.save(new Token(jwtToken))) {
+            throw new IllegalArgumentException("token could not be saved");
+        }
         return new TokenCreateSuccessRes(jwtToken);
+    }
+
+    public void deleteToken(String roomId, String token) {
+        if(!roomRepository.existsById(roomId)) {
+            throw new IllegalArgumentException("Room does not exist");
+        }
+
+        if(!tokenRepository.deleteByToken(token)) {
+            throw new IllegalArgumentException("Token does not exist");
+        }
+
+        //TODO if this was the last token of the room, delete the room
     }
 }
