@@ -29,19 +29,17 @@ public class TokenService {
             throw new IllegalArgumentException("Room does not exist");
         }
 
-        AccessToken token = new AccessToken(apiKey, secret);
+        if(tokenRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("this username already exists in the room");
+        }
 
-        // Fill in token information.
-        token.setName(username);
-        token.setIdentity("identity");
-        // token.setMetadata("metadata");
+        AccessToken token = new AccessToken(apiKey, secret);
+        token.setIdentity(username);
         token.setTtl(ttl); //long millis
         token.addGrants(new RoomJoin(true), new RoomName(roomId));
         String jwtToken = token.toJwt();
-        if(tokenRepository.existsByToken(jwtToken)) {
-            throw new IllegalArgumentException("token already exists for this username in the room");
-        }
-        if(!tokenRepository.save(new Token(jwtToken))) {
+
+        if(!tokenRepository.save(new Token(username, jwtToken))) {
             throw new IllegalArgumentException("token could not be saved");
         }
         return new TokenCreateSuccessRes(jwtToken);
@@ -51,6 +49,7 @@ public class TokenService {
         if(!roomRepository.existsById(roomId)) {
             throw new IllegalArgumentException("Room does not exist");
         }
+
 
         if(!tokenRepository.deleteByToken(token)) {
             throw new IllegalArgumentException("Token does not exist");

@@ -6,5 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class Token {
-    String value;
+    String username;
+    String tokenValue;
 }

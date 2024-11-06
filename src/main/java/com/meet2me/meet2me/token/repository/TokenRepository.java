@@ -6,5 +6,5 @@ public interface TokenRepository {
     boolean save(Token token);
     Token findByToken(String token);
     boolean deleteByToken(String token);
-    boolean existsByToken(String token);
+    boolean existsByUsername(String username);
 }
