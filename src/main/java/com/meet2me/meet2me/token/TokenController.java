@@ -16,8 +16,8 @@ public class TokenController {
         return ResponseEntity.ok(tokenService.createToken(roomId, tokenCreateReq.getUsername()));
     }
 
-    @DeleteMapping("/rooms/{roomId}/tokens")
-    public ResponseEntity<Void> deleteToken(@PathVariable String roomId, @RequestHeader("Authorization") String token) {
+    @DeleteMapping("/rooms/{roomId}/tokens/{token}")
+    public ResponseEntity<Void> deleteToken(@PathVariable String roomId, @PathVariable String token) {
         tokenService.deleteToken(roomId, token);
         return ResponseEntity.noContent().build();
     }
