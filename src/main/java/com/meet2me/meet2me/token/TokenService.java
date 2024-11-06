@@ -33,13 +33,18 @@ public class TokenService {
             throw new IllegalArgumentException("this username already exists in the room");
         }
 
-        AccessToken token = new AccessToken(apiKey, secret);
-        token.setIdentity(username);
-        token.setTtl(ttl); //long millis
-        token.addGrants(new RoomJoin(true), new RoomName(roomId));
-        String jwtToken = token.toJwt();
+        AccessToken livekitAccessToken = new AccessToken(apiKey, secret);
+        livekitAccessToken.setIdentity(username);
+        livekitAccessToken.setTtl(ttl); //long millis
+        livekitAccessToken.addGrants(new RoomJoin(true), new RoomName(roomId));
+        String jwtToken = livekitAccessToken.toJwt();
 
-        if(!tokenRepository.save(new Token(username, jwtToken))) {
+        Token token = Token.builder()
+                .tokenValue(jwtToken)
+                .roomId(roomId)
+                .username(username)
+                .build();
+        if(!tokenRepository.save(token)){
             throw new IllegalArgumentException("token could not be saved");
         }
         return new TokenCreateSuccessRes(jwtToken);
