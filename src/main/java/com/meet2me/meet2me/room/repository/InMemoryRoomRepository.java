@@ -4,6 +4,7 @@ import com.meet2me.meet2me.room.domain.Room;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -31,5 +32,10 @@ public class InMemoryRoomRepository implements RoomRepository {
     @Override
     public boolean deleteById(String roomId) {
         return rooms.remove(roomId) != null;
+    }
+
+    @Override
+    public List<Room> findAll() {
+        return rooms.values().stream().toList();
     }
 }

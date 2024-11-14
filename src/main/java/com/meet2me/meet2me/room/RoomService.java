@@ -34,4 +34,21 @@ public class RoomService {
         List<Token> tokens = tokenRepository.findAllByRoomId(roomId);
         return new RoomInfoRes(roomId, tokens);
     }
+
+    public List<RoomInfoRes> getRooms() {
+        List<Room> rooms = roomRepository.findAll();
+        return rooms.stream().map(room -> getRoom(room.getRoomId())).toList();
+    }
+
+    public void deleteRoom(String roomId) {
+        if(!roomRepository.existsById(roomId)) {
+            throw new IllegalStateException("Room not found");
+        }
+        roomRepository.deleteById(roomId);
+    }
+
+    public void deleteAllRooms() {
+        List<Room> rooms = roomRepository.findAll();
+        rooms.forEach(room -> deleteRoom(room.getRoomId()));
+    }
 }
