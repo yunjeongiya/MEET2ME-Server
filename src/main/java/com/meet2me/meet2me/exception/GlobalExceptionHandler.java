@@ -2,6 +2,7 @@ package com.meet2me.meet2me.exception;
 
 import com.meet2me.meet2me.exception.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, HttpServletRequest request) {
+        log.error(ex.getMessage());
+
         String requestUrl = request.getRequestURL().toString();
         String requestBody = getRequestBody(request);
 
