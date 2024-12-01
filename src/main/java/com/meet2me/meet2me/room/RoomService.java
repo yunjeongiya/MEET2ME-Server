@@ -44,6 +44,7 @@ public class RoomService {
         if(!roomRepository.existsById(roomId)) {
             throw new IllegalStateException("Room not found");
         }
+        tokenRepository.findAllByRoomId(roomId).forEach(token -> tokenRepository.deleteByToken(token.getTokenValue()));
         roomRepository.deleteById(roomId);
     }
 
