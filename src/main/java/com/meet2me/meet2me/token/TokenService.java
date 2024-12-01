@@ -29,7 +29,7 @@ public class TokenService {
             throw new IllegalArgumentException("Room does not exist");
         }
 
-        if(tokenRepository.existsByUsername(username)) {
+        if(tokenRepository.findAllByRoomId(roomId).stream().anyMatch(token -> token.getUsername().equals(username))) {
             throw new IllegalArgumentException("this username already exists in the room");
         }
 
@@ -54,7 +54,6 @@ public class TokenService {
         if(!roomRepository.existsById(roomId)) {
             throw new IllegalArgumentException("Room does not exist");
         }
-
 
         if(!tokenRepository.deleteByToken(token)) {
             throw new IllegalArgumentException("Token does not exist");
